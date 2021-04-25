@@ -15,22 +15,29 @@ public class PlayerRaycaster : MonoBehaviour
     {
         if ((Input.touchCount > 0) && (Input.GetTouch(0).phase == TouchPhase.Began) || Input.GetMouseButtonDown(0))
         {
-            Debug.Log(Input.GetMouseButtonDown(0));
             Ray raycast = Input.GetMouseButtonDown(0) ?  Camera.main.ScreenPointToRay(Input.mousePosition) : Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-            RaycastHit raycastHit;
-            if (Physics.Raycast(raycast, out raycastHit))
+            
+            // Bit shift the index of the layer (8) to get a bit mask
+            int scenary = 1 << LayerMask.NameToLayer("Walkable");
+            int player = 1 << LayerMask.NameToLayer("Ignore Raycast");
+            int mask = scenary | player;
+            var hits = Physics.RaycastAll(raycast,5f, ~mask);
+            if (hits != null)
             {
-                Debug.Log("Something Hit");
-                if (raycastHit.collider.CompareTag("Interactable"))
+                foreach(RaycastHit raycastHit in hits)
                 {
-                    if(raycastHit.collider.GetComponent<InteractableItem>())
+                    if (raycastHit.collider.CompareTag("Interactable"))
                     {
-                        raycastHit.collider.GetComponent<InteractableItem>().SendMessage("Interact", this.gameObject);
-                    }else{
-                        Debug.Log("Please add interactable script to: " + raycastHit.collider.gameObject.name);
+                        if(raycastHit.collider.GetComponent<InteractableItem>())
+                        {
+                            raycastHit.collider.GetComponent<InteractableItem>().SendMessage("Interact", this.gameObject);
+                        }else{
+                            Debug.Log("Please add interactable script to: " + raycastHit.collider.gameObject.name);
+                        }
+                        break;
                     }
-                    
                 }
+               
             }
         }
     }

@@ -41,7 +41,7 @@ public class PlayerInventory : MonoBehaviour
     IEnumerator PickUpCoolDown()
     {
         throwable = false;
-        yield return new WaitForSeconds(1F);
+        yield return new WaitForSeconds(0.2F);
         throwable = true;
     }
     // Update is called once per frame
@@ -72,7 +72,7 @@ public class PlayerInventory : MonoBehaviour
                     throwableObject.GetComponent<Rigidbody>().detectCollisions = true; 
                     throwableObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
                     throwableObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-                    throwableObject.transform.SetParent (transform);
+                    throwableObject.transform.SetParent (null);
 
                     if (Input.GetMouseButtonDown(0)) {
                         throwableObject.GetComponent<Rigidbody>().AddForce(transform.forward * throwForce);

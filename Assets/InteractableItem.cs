@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class InteractableItem : MonoBehaviour
 {
+    public ItemType itemType = ItemType.Drink;
     // Start is called before the first frame update
     void Start()
     {

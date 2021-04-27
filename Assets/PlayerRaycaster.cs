@@ -25,7 +25,7 @@ public class PlayerRaycaster : MonoBehaviour
             int scenary = 1 << LayerMask.NameToLayer("Walkable");
             int player = 1 << LayerMask.NameToLayer("Ignore Raycast");
             int mask = scenary | player;
-            var hits = Physics.RaycastAll(raycast,5f, ~mask);
+            var hits = Physics.RaycastAll(raycast,5f);
             Debug.Log("Ray");
             if (hits != null)
             {
